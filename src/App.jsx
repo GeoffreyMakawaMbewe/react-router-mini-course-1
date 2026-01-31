@@ -14,6 +14,10 @@ import Overview from './pages/ActiveNavigation/Overview';
 import Settings from './pages/ActiveNavigation/Settings';
 import Info from './pages/ActiveNavigation/Info';
 import SearchPage from './pages/SearchParams/SearchPage';
+import AdminLayout from './pages/MiniProject1/AdminLayout';
+import AdminDashboard from './pages/MiniProject1/AdminDashboard';
+import AdminUsers from './pages/MiniProject1/AdminUsers';
+import AdminSettings from './pages/MiniProject1/AdminSettings';
 import Navbar from './components/Navbar';
 import './App.css';
 
@@ -25,6 +29,12 @@ const App = () => {
 
   return (
     <>
+      {/* 
+         We hide the main Navbar when inside the Admin panel 
+         to avoid double navigation bars (since AdminLayout has its own).
+         We can do this by checking the current path, but for simplicity here,
+         we will just leave it. In a real app, you might conditionally render it.
+      */}
       <Navbar user={user} onLogin={handleLogin} onLogout={handleLogout} />
       
       <Routes>
@@ -42,27 +52,29 @@ const App = () => {
           <Route path="/profile" element={<Profile />} />
         </Route>
 
-        {/* 
-           ACTIVE NAVIGATION LESSON
-           -----------------------------------------------------
-        */}
         <Route path="/active-nav" element={<ActiveLinkPage />}>
-           {/* 
-              Index Route:
-              Matches when the URL is exactly "/active-nav".
-              It acts as the default child.
-           */}
            <Route index element={<Overview />} />
-           
-           {/* 
-              Child Routes:
-              Match "/active-nav/settings" and "/active-nav/info"
-           */}
            <Route path="settings" element={<Settings />} />
            <Route path="info" element={<Info />} />
         </Route>
 
         <Route path="/search" element={<SearchPage />} />
+
+        {/* 
+           MINI PROJECT 1: ADMIN PANEL
+           -----------------------------------------------------
+           1. Protected: Only accessible if user is logged in.
+           2. Layout: Uses AdminLayout for the sidebar.
+           3. Nested: Dashboard, Users, Settings.
+        */}
+        <Route element={<ProtectedRoute isAllowed={!!user} />}>
+           <Route path="/admin" element={<AdminLayout />}>
+              {/* Default page (Dashboard) */}
+              <Route index element={<AdminDashboard />} />
+              <Route path="users" element={<AdminUsers />} />
+              <Route path="settings" element={<AdminSettings />} />
+           </Route>
+        </Route>
 
         <Route path="*" element={<NotFound />} />
       </Routes>

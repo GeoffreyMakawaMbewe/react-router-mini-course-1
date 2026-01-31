@@ -1,15 +1,12 @@
 import { NavLink } from 'react-router-dom';
 
 const Navbar = ({ user, onLogin, onLogout }) => {
-  // Helper function for styling NavLinks
   const getLinkClass = ({ isActive }) => {
     const baseClass = "px-3 py-2 rounded-md text-sm font-medium transition-colors";
     
     if (isActive) {
-      // Active: Darker background, white text
       return `${baseClass} bg-gray-900 text-white`;
     } else {
-      // Inactive: Gray text, hover effect
       return `${baseClass} text-gray-300 hover:bg-gray-700 hover:text-white`;
     }
   };
@@ -18,7 +15,6 @@ const Navbar = ({ user, onLogin, onLogout }) => {
     <nav className="bg-gray-800 p-4 flex justify-between items-center">
       <ul className="flex space-x-2 items-center">
         <li>
-          {/* Use 'end' for Home so it doesn't match everything starting with '/' */}
           <NavLink to="/" end className={getLinkClass}>
             Home
           </NavLink>
@@ -36,6 +32,11 @@ const Navbar = ({ user, onLogin, onLogout }) => {
         <li>
           <NavLink to="/profile" className={getLinkClass}>
             Profile
+          </NavLink>
+        </li>
+        <li>
+          <NavLink to="/admin" className={getLinkClass}>
+            Admin Panel
           </NavLink>
         </li>
       </ul>
