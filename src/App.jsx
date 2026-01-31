@@ -1,44 +1,42 @@
-// 'Routes' acts as a container for all our individual route definitions.
-// 'Route' is used to define a single mapping between a URL path and a Component.
 import { Routes, Route } from 'react-router-dom';
-
-// We import the page components we want to show.
 import Home from './pages/Home';
 import About from './pages/About';
-
-// We import our Navbar component which will be visible on all pages.
+import NotFound from './pages/NotFound';
+import User from './pages/User';
+import UserPosts from './pages/UserPosts';
 import Navbar from './components/Navbar';
-
 import './App.css';
-import NotFound from "./pages/NotFound.jsx";
-import User from "./pages/User.jsx";
 
 const App = () => {
   return (
     <>
-      {/* 
-        The Navbar is placed OUTSIDE of the <Routes> component.
-        This ensures it is always rendered, regardless of the current URL.
-        It acts like a persistent header.
-      */}
       <Navbar />
-
-      {/* 
-        The <Routes> component looks at the current URL and decides which 
-        one of the child <Route> components to render. It picks the one that matches.
-      */}
       <Routes>
-        {/* 
-          If the URL path is exactly "/" (the root), render the <Home /> component.
-        */}
         <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+        
+        {/* 
+           NESTED ROUTE CONFIGURATION
+           -----------------------------------------------------
+           We want to render <UserPosts> INSIDE <User>.
+           
+           1. Parent Route: Matches "/user/:id" (e.g., /user/1)
+              - Renders <User />
+              
+           2. Child Route: Matches "posts" (relative to parent)
+              - Full URL match: "/user/:id/posts" (e.g., /user/1/posts)
+              - Renders <UserPosts /> INSIDE the <Outlet /> of <User />
+        */}
+        <Route path="/user/:id" element={<User />}>
+           <Route path="posts" element={<UserPosts />} />
+        </Route>
 
         {/* 
-          If the URL path is "/about", render the <About /> component.
+           Catch-All Route (404)
+           -----------------------------------------------------
+           The "*" matches any URL that hasn't been matched by the routes above.
         */}
-        <Route path="/about" element={<About />} />
-          <Route path="/user/:userId" element={<User />} />
-          <Route path="*" element={<NotFound />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </>
   );
