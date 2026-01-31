@@ -1,29 +1,43 @@
-// We import 'Link' from react-router-dom.
-// This is used instead of the standard HTML <a> tag.
-// The <a> tag causes a full page reload, which we want to avoid in a Single Page App (SPA).
 import { Link } from 'react-router-dom';
 
-const Navbar = () => {
+const Navbar = ({ user, onLogin, onLogout }) => {
   return (
-    // A simple navigation bar styled with Tailwind CSS
-    <nav className="bg-gray-800 p-4">
-      <ul className="flex space-x-4">
+    <nav className="bg-gray-800 p-4 flex justify-between items-center">
+      <ul className="flex space-x-4 items-center">
         <li>
-          {/* 
-            The 'to' prop is like the 'href' attribute in an <a> tag.
-            It tells React Router which path to change the URL to.
-            When clicked, it changes the URL to '/' without reloading the page.
-          */}
           <Link to="/" className="text-white hover:text-gray-300">Home</Link>
         </li>
         <li>
-          {/* 
-            Here, clicking this link changes the URL to '/about'.
-            React Router detects this change and renders the component associated with '/about'.
-          */}
           <Link to="/about" className="text-white hover:text-gray-300">About</Link>
         </li>
-      .</ul>
+        <li>
+          <Link to="/login" className="text-white hover:text-gray-300">Login (useNavigate)</Link>
+        </li>
+        <li>
+          <Link to="/profile" className="text-yellow-400 hover:text-yellow-300 font-semibold">Profile (Protected)</Link>
+        </li>
+      </ul>
+
+      <div className="flex items-center space-x-4">
+        {user ? (
+          <>
+            <span className="text-gray-300">Welcome, {user.name}</span>
+            <button 
+              onClick={onLogout}
+              className="px-3 py-1 bg-red-600 text-white text-sm rounded hover:bg-red-700"
+            >
+              Logout
+            </button>
+          </>
+        ) : (
+          <button 
+            onClick={onLogin}
+            className="px-3 py-1 bg-green-600 text-white text-sm rounded hover:bg-green-700"
+          >
+            Simulate Login
+          </button>
+        )}
+      </div>
     </nav>
   );
 };
