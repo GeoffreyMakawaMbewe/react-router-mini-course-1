@@ -10,6 +10,10 @@ import Dashboard from './pages/RoutingWithUseNavigate/Dashboard';
 import Profile from './pages/ProtectedRoutes/Profile';
 import ProtectedRoute from './pages/ProtectedRoutes/ProtectedRoute';
 import ActiveLinkPage from './pages/ActiveNavigation/ActiveLinkPage';
+import Overview from './pages/ActiveNavigation/Overview';
+import Settings from './pages/ActiveNavigation/Settings';
+import Info from './pages/ActiveNavigation/Info';
+import SearchPage from './pages/SearchParams/SearchPage';
 import Navbar from './components/Navbar';
 import './App.css';
 
@@ -41,15 +45,24 @@ const App = () => {
         {/* 
            ACTIVE NAVIGATION LESSON
            -----------------------------------------------------
-           Parent route renders the TabMenu and an Outlet.
-           Child routes render the content for each tab.
         */}
         <Route path="/active-nav" element={<ActiveLinkPage />}>
-           {/* Index route renders when path is exactly "/active-nav" */}
-           <Route index element={<div><h3 className="text-xl font-bold">Overview Content</h3><p>This is the main overview tab.</p></div>} />
-           <Route path="settings" element={<div><h3 className="text-xl font-bold">Settings Content</h3><p>Adjust your preferences here.</p></div>} />
-           <Route path="info" element={<div><h3 className="text-xl font-bold">Info Content</h3><p>Some information about this section.</p></div>} />
+           {/* 
+              Index Route:
+              Matches when the URL is exactly "/active-nav".
+              It acts as the default child.
+           */}
+           <Route index element={<Overview />} />
+           
+           {/* 
+              Child Routes:
+              Match "/active-nav/settings" and "/active-nav/info"
+           */}
+           <Route path="settings" element={<Settings />} />
+           <Route path="info" element={<Info />} />
         </Route>
+
+        <Route path="/search" element={<SearchPage />} />
 
         <Route path="*" element={<NotFound />} />
       </Routes>
